@@ -466,35 +466,131 @@ app.get("/api/latest-reading", async (req, res) => {
         }
 
         const reading = readingResult.rows[0];
-        console.log("Found reading, sending response");
+        
+        // Send HTML response instead of JSON
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Spiritual Reading for ${latestUser.name}</title>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background-color: #1a1a1a;
+                        color: #333;
+                        margin: 0;
+                        padding: 40px 20px;
+                        line-height: 1.6;
+                    }
+                    .container {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                    }
+                    .header {
+                        text-align: center;
+                        color: #fff;
+                        margin-bottom: 40px;
+                    }
+                    .header h1 {
+                        font-size: 2.5em;
+                        margin-bottom: 10px;
+                        background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                    }
+                    .date-info {
+                        color: #888;
+                        font-size: 1.1em;
+                    }
+                    .reading-box {
+                        background: #ffffff;
+                        border-radius: 15px;
+                        padding: 30px;
+                        margin-bottom: 30px;
+                        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                        transition: transform 0.3s ease;
+                    }
+                    .reading-box:hover {
+                        transform: translateY(-5px);
+                    }
+                    .reading-box h2 {
+                        color: #2c3e50;
+                        margin-top: 0;
+                        padding-bottom: 15px;
+                        border-bottom: 2px solid #ff6b6b;
+                        font-size: 1.8em;
+                    }
+                    .reading-content {
+                        color: #444;
+                        font-size: 1.1em;
+                        white-space: pre-line;
+                        padding: 15px 0;
+                    }
+                    .icon {
+                        font-size: 1.5em;
+                        margin-right: 10px;
+                    }
+                    @media (max-width: 768px) {
+                        body {
+                            padding: 20px 10px;
+                        }
+                        .reading-box {
+                            padding: 20px;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h1>Spiritual Reading</h1>
+                        <div class="date-info">
+                            For: ${latestUser.name}<br>
+                            Generated on: ${new Date(reading.created_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}
+                        </div>
+                    </div>
 
-        // Format and send the response
-        res.status(200).json({
-            user: {
-                id: latestUser.id,
-                name: latestUser.name,
-                dateOfBirth: latestUser.date_of_birth,
-                timeOfBirth: latestUser.time_of_birth,
-                gender: latestUser.gender,
-                state: latestUser.state,
-                city: latestUser.city,
-                createdAt: latestUser.created_at
-            },
-            reading: {
-                kundaliInsights: reading.kundali_insights,
-                recommendations: reading.ai_recommendations,
-                spiritualGuidance: reading.spiritual_guidance,
-                createdAt: reading.created_at
-            }
-        });
+                    <div class="reading-box">
+                        <h2><span class="icon">🔮</span>Kundali Insights</h2>
+                        <div class="reading-content">
+                            ${reading.kundali_insights}
+                        </div>
+                    </div>
+
+                    <div class="reading-box">
+                        <h2><span class="icon">✨</span>Recommendations</h2>
+                        <div class="reading-content">
+                            ${reading.ai_recommendations}
+                        </div>
+                    </div>
+
+                    <div class="reading-box">
+                        <h2><span class="icon">🕉️</span>Spiritual Guidance</h2>
+                        <div class="reading-content">
+                            ${reading.spiritual_guidance}
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `);
 
     } catch (err) {
         console.error("Error fetching latest reading:", err);
-        console.error("Error details:", err.message);
-        res.status(500).json({ 
-            error: "Failed to fetch latest reading",
-            details: process.env.NODE_ENV === 'development' ? err.message : undefined
-        });
+        res.status(500).send(`
+            <html>
+                <body style="background-color: #1a1a1a; color: #fff; font-family: Arial; text-align: center; padding: 50px;">
+                    <h1 style="color: #ff6b6b;">Error</h1>
+                    <p>Failed to fetch latest reading</p>
+                    ${process.env.NODE_ENV === 'development' ? `<p style="color: #888;">${err.message}</p>` : ''}
+                </body>
+            </html>
+        `);
     }
 });
 
