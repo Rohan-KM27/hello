@@ -58,7 +58,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1>SoulBuddy: AI-Powered Spiritual Guide</h1>
+      <h1>✨ SoulBuddy ✨<br/><span style={{ fontSize: '1.2rem', fontWeight: 'normal' }}>Your AI-Powered Spiritual Guide</span></h1>
       <form onSubmit={handleSubmit} className="form-container">
         <div className="form-group">
           <label htmlFor="name">Name:</label>

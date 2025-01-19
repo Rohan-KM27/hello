@@ -539,10 +539,33 @@ app.get("/api/latest-reading", async (req, res) => {
                             padding: 20px;
                         }
                     }
+
+                    /* Add purple button styles */
+                    .redirect-button {
+                        position: fixed;
+                        right: 30px;
+                        bottom: 100px;
+                        padding: 20px 40px;
+                        background: linear-gradient(45deg, #9c27b0, #673ab7);
+                        color: white;
+                        border: none;
+                        border-radius: 30px;
+                        cursor: pointer;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                        transition: transform 0.3s ease;
+                        font-size: 1.2em;
+                        font-weight: bold;
+                    }
+                    .redirect-button:hover {
+                        transform: scale(1.05);
+                    }
                 </style>
             </head>
             <body>
                 <div class="container">
+                    <button class="redirect-button" onclick="window.location.href='#'">
+                        Chat Bot
+                    </button>
                     <div class="header">
                         <h1>Spiritual Reading</h1>
                         <div class="date-info">
