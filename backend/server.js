@@ -563,7 +563,7 @@ app.get("/api/latest-reading", async (req, res) => {
             </head>
             <body>
                 <div class="container">
-                    <button class="redirect-button" onclick="window.location.href='#'">
+                    <button class="redirect-button" onclick="window.location.href='https://team-echo.streamlit.app/'">
                         Chat Bot
                     </button>
                     <div class="header">
