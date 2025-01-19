@@ -484,8 +484,11 @@ app.get("/api/latest-reading", async (req, res) => {
                         line-height: 1.6;
                     }
                     .container {
+                        position: relative;
                         max-width: 1200px;
                         margin: 0 auto;
+                        padding: 20px;
+                        z-index: 1;
                     }
                     .header {
                         text-align: center;
@@ -504,12 +507,15 @@ app.get("/api/latest-reading", async (req, res) => {
                         font-size: 1.1em;
                     }
                     .reading-box {
+                        position: relative;
                         background: #ffffff;
                         border-radius: 15px;
                         padding: 30px;
                         margin-bottom: 30px;
                         box-shadow: 0 10px 20px rgba(0,0,0,0.2);
                         transition: transform 0.3s ease;
+                        width: 100%;
+                        display: block;
                     }
                     .reading-box:hover {
                         transform: translateY(-5px);
@@ -526,6 +532,7 @@ app.get("/api/latest-reading", async (req, res) => {
                         font-size: 1.1em;
                         white-space: pre-line;
                         padding: 15px 0;
+                        width: 100%;
                     }
                     .icon {
                         font-size: 1.5em;
@@ -540,41 +547,33 @@ app.get("/api/latest-reading", async (req, res) => {
                         }
                     }
 
-                    /* Add purple button styles */
-                    .redirect-button {
+                    /* ChatBot button */
+                    .chat-bot {
                         position: fixed;
-                        right: 30px;
-                        bottom: 100px;
-                        padding: 20px 40px;
-                        background: linear-gradient(45deg, #9c27b0, #673ab7);
+                        right: 20px;
+                        bottom: 20px;
+                        padding: 10px 20px;
+                        background: #9c27b0;
                         color: white;
                         border: none;
-                        border-radius: 30px;
+                        border-radius: 15px;
+                        font-size: 14px;
                         cursor: pointer;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                        transition: transform 0.3s ease;
-                        font-size: 1.2em;
-                        font-weight: bold;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                        z-index: 9999;
                     }
-                    .redirect-button:hover {
-                        transform: scale(1.05);
+                    .chat-bot:hover {
+                        background: #7b1fa2;
                     }
                 </style>
             </head>
             <body>
                 <div class="container">
-                    <button class="redirect-button" onclick="window.location.href='https://team-echo.streamlit.app/'">
-                        Chat Bot
-                    </button>
                     <div class="header">
                         <h1>Spiritual Reading</h1>
                         <div class="date-info">
                             For: ${latestUser.name}<br>
-                            Generated on: ${new Date(reading.created_at).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            })}
+                            Generated on: ${new Date(reading.created_at).toLocaleDateString()}
                         </div>
                     </div>
 
@@ -599,6 +598,10 @@ app.get("/api/latest-reading", async (req, res) => {
                         </div>
                     </div>
                 </div>
+                
+                <button class="chat-bot" onclick="window.location.href='https://team-echo.streamlit.app/'">
+                    ChatBot
+                </button>
             </body>
             </html>
         `);
